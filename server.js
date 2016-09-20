@@ -25,9 +25,21 @@ app.get('/admin', function(req, res) {
                      
         if (err) {
             console.log('Erro na query:' + err);
-            connection.query('CREATE TABLE Area_Cutpoint (id int(11) NOT NULL AUTO_INCREMENT, Area TINYTEXT, CutPointNome TINYTEXT, Operador TINYTEXT, CutPointValor FLOAT(3,2), Feminino FLOAT(3,2), Masculino FLOAT(3,2), PRIMARY KEY (id) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;);', function(err, rows, fields) {
-                if (err) { 
-                    console.log('ERRO na query de criacao da tabela' + err);
+            var queryCreateTable = 'CREATE TABLE Area_Cutpoint ( ';
+            queryCreateTable += ' id int(11) NOT NULL AUTO_INCREMENT, ';
+            queryCreateTable += ' Area TINYTEXT, ';
+            queryCreateTable += ' CutPointNome TINYTEXT, ';
+            queryCreateTable += ' Operador TINYTEXT, ';
+            queryCreateTable += ' CutPointValor FLOAT(3,2), ';
+            queryCreateTable += ' Feminino FLOAT(3,2), ';
+            queryCreateTable += ' Masculino FLOAT(3,2), ';
+            queryCreateTable += ' PRIMARY KEY (id) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ; ';
+            queryCreateTable += ' ) ';
+            console.log(queryCreateTable);
+            
+            connection.query(queryCreateTable, function(err2, rows, fields) {
+                if (err2) { 
+                    console.log('ERRO na query de criacao da tabela' + err2);
                 } else { 
                     console.log('Criacao da tabela OK!');
                 }
