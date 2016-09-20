@@ -33,6 +33,7 @@ app.get('/admin', function(req, res) {
                      
         if (err) {
             console.log('Erro na query:' + err);
+            connection.end();
         } else {
             var resultado = rows[0].AreaNome;
             console.log('resultado: ' + resultado);
