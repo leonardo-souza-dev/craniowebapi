@@ -14,7 +14,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                     // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
-var connection = mysql.createConnection('mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true');
+var connStr = 'mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true';
+var connection = mysql.createConnection(connStr);
 
 
 
@@ -24,9 +25,6 @@ app.get('/admin', function(req, res) {
     connection.query('SELECT 1 AS existe FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
                      
         if (err) {
-            console.log('Rows' + rows);
-            console.log('Rows[0]' + rows[0]);
-            console.log('Fields' + fields);
             console.log('Erro na query:' + err);
             var queryCreateTable = 'CREATE TABLE Area_Cutpoint ( ';
             queryCreateTable += ' id int(11) NOT NULL AUTO_INCREMENT, ';
@@ -40,13 +38,16 @@ app.get('/admin', function(req, res) {
             queryCreateTable += ' ) ';
             console.log(queryCreateTable);
             
-            connection.query(queryCreateTable, function(err2, rows, fields) {
+            var connCriarTabela = mysql.createConnection(connStr);
+            connCriarTabela.query(queryCreateTable, function(err2, rows){
                 if (err2) { 
                     console.log('ERRO na query de criacao da tabela' + err2);
                 } else { 
-                    console.log('Criacao da tabela OK!');
+                    console.log('Data received from Db:\n');
+                    console.log(rows);
                 }
             });
+            
         } else {
             var resultado = rows[0].existe;
             console.log('resultado: ' + resultado);
