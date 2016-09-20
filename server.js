@@ -24,6 +24,9 @@ app.get('/admin', function(req, res) {
     connection.query('SELECT 1 AS existe FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
                      
         if (err) {
+            console.log('Rows' + rows);
+            console.log('Rows[0]' + rows[0]);
+            console.log('Fields' + fields);
             console.log('Erro na query:' + err);
             var queryCreateTable = 'CREATE TABLE Area_Cutpoint ( ';
             queryCreateTable += ' id int(11) NOT NULL AUTO_INCREMENT, ';
