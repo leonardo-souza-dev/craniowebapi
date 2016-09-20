@@ -14,54 +14,32 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
 app.use(bodyParser.json());                                     // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
-var connStr = 'mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true';
+var connStr = 'mysql://l7ox3rllqlc7ck19:cvyr1h8c0ld6keib@sp6xl8zoyvbumaa2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/itkqn78npl6fe465';
 var connection = mysql.createConnection(connStr);
 
 
 
 app.get('/admin', function(req, res) {
 
-    connection.connect();
-    connection.query('SELECT 1 AS existe FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
+    connection.connect(function(err){
+        if(err){
+            console.log('Error connecting to Db');
+            return;
+        }
+        console.log('Connection established');
+    });
+
+    connection.query('SELECT AreaNome FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
                      
         if (err) {
             console.log('Erro na query:' + err);
-            var queryCreateTable = 'CREATE TABLE Area_Cutpoint ( ';
-            queryCreateTable += ' id int(11) NOT NULL AUTO_INCREMENT, ';
-            queryCreateTable += ' Area TINYTEXT, ';
-            queryCreateTable += ' CutPointNome TINYTEXT, ';
-            queryCreateTable += ' Operador TINYTEXT, ';
-            queryCreateTable += ' CutPointValor FLOAT(3,2), ';
-            queryCreateTable += ' Feminino FLOAT(3,2), ';
-            queryCreateTable += ' Masculino FLOAT(3,2), ';
-            queryCreateTable += ' PRIMARY KEY (id) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ; ';
-            queryCreateTable += ' ) ';
-            console.log(queryCreateTable);
-            
-            var connCriarTabela = mysql.createConnection(connStr);
-            connCriarTabela.query(queryCreateTable, function(err2, rows){
-                if (err2) { 
-                    console.log('ERRO na query de criacao da tabela' + err2);
-                } else { 
-                    console.log('Data received from Db:\n');
-                    console.log(rows);
-                }
-            });
-            
         } else {
-            var resultado = rows[0].existe;
+            var resultado = rows[0].AreaNome;
             console.log('resultado: ' + resultado);
-
-            if (!resultado) {
-                console.log('Tabela Area_Cutpoint NÃO existe!!');
-            } else {
-                console.log('Tabela Area_Cutpoint existe');
-            }
         }
     });
 
     connection.end();
-
     res.send('CranioAdmin');
 });
 
