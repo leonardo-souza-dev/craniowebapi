@@ -1,9 +1,18 @@
-var http = require('http');
-var mysql = require('mysql');
+
 var express  = require('express');
 var app      = express();
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var url = require('url');
+
+var http = require('http');
+var mysql = require('mysql');
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
+app.use(bodyParser.json());                                     // parse application/json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 
 var connection = mysql.createConnection('mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true');
 
@@ -17,7 +26,7 @@ var connection = mysql.createConnection({
 //mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true
 connection.connect();
 
-var asd = 'asd';
+var asd = 'asdd';
 
 connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
                  
@@ -39,6 +48,6 @@ app.listen(app.get('port'), function() {
            console.log('Node app is running on port', app.get('port'));
            });
 
-app.get('*', auth, function(req, res) {
+app.get('/', function(req, res) {
         res.send('Hello World\n' + asd);
         });
