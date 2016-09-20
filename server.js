@@ -1,12 +1,13 @@
-
+//requires
 var express  = require('express');
 var app      = express();
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var url = require('url');
-
 var http = require('http');
 var mysql = require('mysql');
+
+//configs
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
@@ -15,19 +16,9 @@ app.use(bodyParser.json());                                     // parse applica
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 
 var connection = mysql.createConnection('mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true');
-
-/*
-var connection = mysql.createConnection({
-                                        host     : 'us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c',
-                                        user     : 'bcadada6a126f7',
-                                        password : 'bfe1febc'
-                                        });
- */
-//mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true
 connection.connect();
 
 asd = 'qwe';
-
 connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
                  
     if (err) {
