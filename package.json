@@ -1,0 +1,24 @@
+{
+    "name": "craniowebapi",
+    "version": "0.0.1",
+    "description": "WebApi for CranioCalculator",
+    "engines": {
+        "node": "4.5.0"
+    },
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "mysql": "^2.11.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ltreze/craniowebapi"
+    },
+    "keywords": [
+                 "node",
+                 "heroku"
+                 ],
+    "license": "MIT"
+}
