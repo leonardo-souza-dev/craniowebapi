@@ -25,22 +25,18 @@ app.get('/admin', function(req, res) {
                      
         if (err) {
             console.log('Erro na query:' + err);
+            connection.query('CREATE TABLE Area_Cutpoint (id int(11) NOT NULL AUTO_INCREMENT, Area TINYTEXT, CutPointNome TINYTEXT, Operador TINYTEXT, CutPointValor FLOAT(3,2), Feminino FLOAT(3,2), Masculino FLOAT(3,2), PRIMARY KEY (id) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;);', function(err, rows, fields) {
+                if (err) { 
+                    console.log('ERRO na query de criacao da tabela' + err);
+                } else { 
+                    console.log('Criacao da tabela OK!');
+                }
+            });
         } else {
             var resultado = rows[0].existe;
             console.log('resultado: ' + resultado);
 
             if (!resultado) {
-                /*connection.query('CREATE TABLE Area_Cutpoint (id int(11) NOT NULL AUTO_INCREMENT, Area TINYTEXT, CutPointNome TINYTEXT, Operador TINYTEXT, CutPointValor FLOAT(3,2), Feminino FLOAT(3,2), Masculino FLOAT(3,2), PRIMARY KEY (id) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;);', function(err, rows, fields) {
-                    if (err) { 
-                        console.log('erro na query de criacao da tabela');
-                        throw err; 
-                    } else {
-                        var resultado = rows[0].solution;
-                        if (!resultado) {
-                            
-                        }
-                    }
-                });*/
                 console.log('Tabela Area_Cutpoint NÃO existe!!');
             } else {
                 console.log('Tabela Area_Cutpoint existe');
