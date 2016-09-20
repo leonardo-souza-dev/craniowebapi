@@ -17,17 +17,43 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 var connStr = 'mysql://l7ox3rllqlc7ck19:cvyr1h8c0ld6keib@sp6xl8zoyvbumaa2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/itkqn78npl6fe465';
 var connection = mysql.createConnection(connStr);
 
+connection.connect(function(err){
+    if(err){
+        console.log('Error connecting to Db');
+        return;
+    }
+    console.log('Connection established');
+});
 
+
+app.get('/api/obterSuperiores', function(req, res) {
+
+    connection.query("SELECT * FROM Area_Cutpoint WHERE AreaNome = 'Medidas Cranianas Superiores'", function(err, rows, fields) {
+                     
+        if (err) {
+            console.log('Erro na query:' + err);
+            connection.end();
+        } else {
+            console.log('resultado Medidas Cranianas Superiores:');
+            for (var i = 0; i < rows.length; i++) {
+                console.log(rows[i]);
+            };
+            res.json(
+            { 
+                Id: rows[0].Id, 
+                AreaNome: rows[0].AreaNome, 
+                CutPointName: rows[0].CutPointName, 
+                Operador: rows[0].Operador, 
+                CutPointValor: rows[0].CutPointValor, 
+                Feminino: rows[0].Feminino, 
+                Masculino: rows[0].Masculino 
+            });
+        }
+    });
+
+});
 
 app.get('/admin', function(req, res) {
-
-    connection.connect(function(err){
-        if(err){
-            console.log('Error connecting to Db');
-            return;
-        }
-        console.log('Connection established');
-    });
 
     connection.query('SELECT AreaNome FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
                      
