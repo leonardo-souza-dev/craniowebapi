@@ -17,15 +17,15 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 var connection = mysql.createConnection('mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true');
 
 connection.connect();
-connection.query('SELECT 1 FROM Area_Cutpoint', function(err, rows, fields) {
+connection.query('SELECT 1 AS EXISTE FROM Area_Cutpoint', function(err, rows, fields) {
                  
     if (err) {
         console.log('***erro na query****');
         throw err;
     } else {
-        var resultado = rows[0].solution;
+        var resultado = rows[0].EXISTE;
         console.log('resultado: ' + resultado);
-        
+
         if (!resultado) {
             /*connection.query('CREATE TABLE Area_Cutpoint (Area TINYTEXT, CutPointNome TINYTEXT, Operador TINYTEXT, CutPointValor FLOAT(3,2), Feminino FLOAT(3,2), Masculino FLOAT(3,2) );', function(err, rows, fields) {
                 if (err) { 
