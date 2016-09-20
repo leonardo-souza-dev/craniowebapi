@@ -16,39 +16,42 @@ app.use(bodyParser.json());                                     // parse applica
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 var connection = mysql.createConnection('mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true');
 
-connection.connect();
-connection.query('SELECT 1 AS EXISTE FROM Area_Cutpoint', function(err, rows, fields) {
-                 
-    if (err) {
-        console.log('***erro na query****');
-        throw err;
-    } else {
-        var resultado = rows[0].EXISTE;
-        console.log('resultado: ' + resultado);
 
-        if (!resultado) {
-            /*connection.query('CREATE TABLE Area_Cutpoint (Area TINYTEXT, CutPointNome TINYTEXT, Operador TINYTEXT, CutPointValor FLOAT(3,2), Feminino FLOAT(3,2), Masculino FLOAT(3,2) );', function(err, rows, fields) {
-                if (err) { 
-                    console.log('erro na query de criacao da tabela');
-                    throw err; 
-                } else {
-                    var resultado = rows[0].solution;
-                    if (!resultado) {
-                        
-                    }
-                }
-            });*/
-            console.log('Tabela Area_Cutpoint NÃO existe!!');
-        } else {
-            console.log('Tabela Area_Cutpoint existe');
-        }
-    }
-});
-
-connection.end();
 
 app.get('/admin', function(req, res) {
-    res.send('Admin:' + asd);
+
+    connection.connect();
+    connection.query('SELECT 1 AS existe FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
+                     
+        if (err) {
+            console.log('***erro na query * * * * ');
+            console.log(err);
+        } else {
+            var resultado = rows[0].existe;
+            console.log('resultado: ' + resultado);
+
+            if (!resultado) {
+                /*connection.query('CREATE TABLE Area_Cutpoint (id int(11) NOT NULL AUTO_INCREMENT, Area TINYTEXT, CutPointNome TINYTEXT, Operador TINYTEXT, CutPointValor FLOAT(3,2), Feminino FLOAT(3,2), Masculino FLOAT(3,2), PRIMARY KEY (id) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;);', function(err, rows, fields) {
+                    if (err) { 
+                        console.log('erro na query de criacao da tabela');
+                        throw err; 
+                    } else {
+                        var resultado = rows[0].solution;
+                        if (!resultado) {
+                            
+                        }
+                    }
+                });*/
+                console.log('Tabela Area_Cutpoint NÃO existe!!');
+            } else {
+                console.log('Tabela Area_Cutpoint existe');
+            }
+        }
+    });
+
+    connection.end();
+
+    res.send('CranioAdmin');
 });
 
 app.listen(app.get('port'), function() {
