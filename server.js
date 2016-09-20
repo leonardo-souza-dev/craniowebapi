@@ -24,8 +24,7 @@ app.get('/admin', function(req, res) {
     connection.query('SELECT 1 AS existe FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
                      
         if (err) {
-            console.log('***erro na query * * * * ');
-            console.log(err);
+            console.log('Erro na query:' + err);
         } else {
             var resultado = rows[0].existe;
             console.log('resultado: ' + resultado);
