@@ -26,15 +26,15 @@ var connection = mysql.createConnection({
 //mysql://bcadada6a126f7:bfe1febc@us-cdbr-iron-east-04.cleardb.net/heroku_9295fbed090e56c?reconnect=true
 connection.connect();
 
-var asd = 'asdd';
+asd = 'qwe';
 
 connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
                  
     if (err) {
-        console.log('E N T R O U   N O   E R R O  ');
+        console.log('E N T R O U    N O    E R R O  ');
         throw err;
     } else {
-        console.log('---nao deu erro--');
+        console.log('***** nao deu erro *****');
         asd = rows[0].solution;
         console.log('The solution is: ', rows[0].solution);
     }
@@ -44,10 +44,11 @@ connection.end();
 
 
 console.log('A SOLUCAO EH: ', asd);
-app.listen(app.get('port'), function() {
-           console.log('Node app is running on port', app.get('port'));
-           });
 
-app.get('/', function(req, res) {
-        res.send('Hello World\n' + asd);
-        });
+app.get('/admin', function(req, res) {
+    res.send('Admin:' + asd);
+});
+
+app.listen(app.get('port'), function() {
+    console.log('Node app is running on port', app.get('port'));
+});
