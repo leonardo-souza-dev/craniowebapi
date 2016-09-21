@@ -25,6 +25,34 @@ connection.connect(function(err){
     console.log('Connection established');
 });
 
+//implementacao parcial
+app.post('/api/obterGenero', function(req, res) {
+
+	var valor = req.body.valor;
+	var areaNome = req.body.area_nome;
+	var cutPointName = req.body.cut_point_name;
+	var q = 'SELECT AreaNome, CutPointNome, MAX(CutPointValor) AS CutPointValor FROM Area_Cutpoint ORDER BY AreaNome, CutPointNome';
+    connection.query(q, function(err, rows, fields) {
+                     
+        if (err) {
+            console.log('Erro na query: ' + err);
+            connection.end();
+        } else {
+            console.log('obtendo genero:');
+            for (var i = 0; i < rows.length; i++) {
+                console.log(rows[i]);
+            };
+            res.json(
+            { 
+                AreaNome: rows[0].AreaNome, 
+                CutPointNome: rows[0].CutPointNoame, 
+                CutPointValor: rows[0].CutPointValor 
+            });
+        }
+    });
+
+});
+
 
 app.get('/api/obterSuperiores', function(req, res) {
 
@@ -42,7 +70,7 @@ app.get('/api/obterSuperiores', function(req, res) {
             { 
                 Id: rows[0].Id, 
                 AreaNome: rows[0].AreaNome, 
-                CutPointName: rows[0].CutPointName, 
+                CutPointNome: rows[0].CutPointNome, 
                 Operador: rows[0].Operador, 
                 CutPointValor: rows[0].CutPointValor, 
                 Feminino: rows[0].Feminino, 
