@@ -94,38 +94,17 @@ app.get('/api/obterSuperiores', function(req, res) {
             for (var i = 0; i < rows.length; i++) {
                 console.log(rows[i]);
             };
-            res.json(
-            { 
-                Id: rows[0].Id, 
-                AreaNome: rows[0].AreaNome, 
-                CutPointNome: rows[0].CutPointNome, 
-                Operador: rows[0].Operador, 
-                CutPointValor: rows[0].CutPointValor, 
-                Feminino: rows[0].Feminino, 
-                Masculino: rows[0].Masculino 
-            });
+			
+			var resultado = rows[0];
+            res.json({ resultado: resultado });
         }
     });
-
 });
 
 app.get('/admin', function(req, res) {
-
-    connection.query('SELECT AreaNome FROM Area_Cutpoint LIMIT 1', function(err, rows, fields) {
-                     
-        if (err) {
-            console.log('Erro na query:' + err);
-            connection.end();
-        } else {
-            var resultado = rows[0].AreaNome;
-            console.log('resultado: ' + resultado);
-        }
-    });
-
-    connection.end();
-    res.send('CranioAdmin');
+    res.sendfile('./public/admin.html');
 });
 
 app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
+    console.log('CranioWebApi is running on port', app.get('port'));
 });
