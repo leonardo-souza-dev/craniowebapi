@@ -10,15 +10,57 @@
     <script src="core.js"></script>
 </head>
 <body ng-controller="mainController">
-    <div class="container">
-		<h4>Medidas Cranianas Superiores</h4>
-		<p>AreaNome: {{ superiores.AreaNome }}</p>
-		<p>CutPointNome: {{ superiores.CutPointNome }}</p>
-		<p>Operador: {{ superiores.Operador }}</p>
-		<p>CutPointValor: {{ superiores.CutPointValor }}</p>
-		<p>Feminino: {{ superiores.Feminino }}</p>
-		<p>Masculino: {{ superiores.Masculino }}</p>
-		<p>Ordenador: {{ superiores.Ordenador }}</p>
-    </div>
+	<div class="container">
+		<header>
+			<h1>CranioCalculatorApp Admin</h1>
+		</header>
+		<section>
+			<!--
+				<div class="form-group">
+					<label for="sistemas">Sistema</label>
+					<select id="sistemas" name="sistemas" class="form-control" ng-model="artigo.sistema">
+						<option value="sistema">--Escolha o sistema--</option>
+						<option ng-repeat="r in registros" ng-value="{{r.Id}}">{{r.AreaNome}}</option>
+					</select>
+				</div>
+			-->
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<td>Id</td>
+						<td>AreaNome</td>
+						<td>CutPointNome</td>
+						<td>Operador</td>
+						<td>CutPointValor</td>
+						<td>Feminino</td>
+						<td>Masculino</td>
+						<td>Ordenador</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="r in registros" ng-value="{{r.Id}}">
+						<td>{{r.Id}}</td>
+						<td>{{r.AreaNome}}</td>
+						<td>{{r.CutPointNome}}</td>
+						<td>{{r.Operador}}</td>
+						<td>{{r.CutPointValor}}</td>
+						<td>{{r.Feminino}}</td>
+						<td>{{r.Masculino}}</td>
+						<td>{{r.Ordenador}}</td>
+					</tr>
+				</tbody>
+			</table>
+				
+			<!-- <h4>Medidas Cranianas Superiores</h4>
+			<p>AreaNome: {{ superiores.AreaNome }}</p>
+			<p>CutPointNome: {{ superiores.CutPointNome }}</p>
+			<p>Operador: {{ superiores.Operador }}</p>
+			<p>CutPointValor: {{ superiores.CutPointValor }}</p>
+			<p>Feminino: {{ superiores.Feminino }}</p>
+			<p>Masculino: {{ superiores.Masculino }}</p>
+			<p>Ordenador: {{ superiores.Ordenador }}</p> -->
+			</section>
+		<footer></footer>
+	</div>
 </body>
 </html>

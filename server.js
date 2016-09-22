@@ -82,21 +82,29 @@ app.post('/api/obterGenero', function(req, res) {
 });
 
 
-app.get('/api/obterSuperiores', function(req, res) {
+app.get('/api/obterTudo', function(req, res) {
 
-    connection.query("SELECT * FROM Area_Cutpoint WHERE AreaNome = 'Medidas Cranianas Superiores'", function(err, rows, fields) {
+    connection.query("SELECT * FROM Area_Cutpoint", function(err, rows, fields) {
                      
         if (err) {
             console.log('Erro na query:' + err);
             connection.end();
         } else {
-            console.log('resultado Medidas Cranianas Superiores:');
-            for (var i = 0; i < rows.length; i++) {
+            /*for (var i = 0; i < rows.length; i++) {
                 console.log(rows[i]);
-            };
+            };*/			
 			
 			var resultado = rows[0];
-            res.json({ resultado: resultado });
+			
+			console.log('rows.length');
+			console.log(rows.length);
+			console.log('');
+            
+			console.log('*** tudo');
+            console.log(rows);
+            console.log('');
+			
+            res.json({ resultado: rows });
         }
     });
 });
