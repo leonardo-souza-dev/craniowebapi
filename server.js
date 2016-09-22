@@ -27,27 +27,55 @@ connection.connect(function(err){
 
 //implementacao parcial
 app.post('/api/obterGenero', function(req, res) {
-
+		
 	var valor = req.body.valor;
 	var areaNome = req.body.area_nome;
-	var cutPointName = req.body.cut_point_name;
-	var q = 'SELECT AreaNome, CutPointNome, MAX(CutPointValor) AS CutPointValor FROM Area_Cutpoint ORDER BY AreaNome, CutPointNome';
-    connection.query(q, function(err, rows, fields) {
+	var cutPointNome = req.body.cut_point_nome;
+	
+	var query = " SELECT GERAL2.* " + 
+				" FROM ( " + 
+					" SELECT " + 
+						" B.Ordenador, B.AreaNome, B.CutPointNome, B.Operador, Feminino, Masculino, " + 
+						" CutPointValor AS Inicio,  " + 
+						" (   SELECT " + 
+								" CASE WHEN A.Operador = '>=' THEN A.CutPointValor - 0.01 ELSE A.CutPointValor END AS Op  " + 
+							" FROM " + 
+								" Area_Cutpoint A " + 
+							" WHERE B.Ordenador = A.Ordenador - 1) Fim " +  
+					" FROM " + 
+						" Area_Cutpoint B " + 
+				" ) GERAL2 " + 
+				" WHERE CutPointNome = '" + cutPointNome + 
+				"' AND AreaNome = '" + areaNome + 
+				"' AND GERAL2.INICIO <= " + valor + " AND GERAL2.FIM >= " + valor + ";";
+	
+	console.log('******** query *********');
+	console.log(query);
+	console.log('');
+			
+    connection.query(query, function(err, rows, fields) {
                      
         if (err) {
             console.log('Erro na query: ' + err);
             connection.end();
-        } else {
-            console.log('obtendo genero:');
+        } else {/*
+            console.log('**********rows:');
+            console.log(rows);
+            console.log('');
+			
+            console.log('**********rows[0].CutPointNome:');
+            console.log(rows[0].CutPointNome);
+            console.log('');
+			
+            console.log('**********obtendo genero:');
             for (var i = 0; i < rows.length; i++) {
                 console.log(rows[i]);
             };
-            res.json(
-            { 
-                AreaNome: rows[0].AreaNome, 
-                CutPointNome: rows[0].CutPointNoame, 
-                CutPointValor: rows[0].CutPointValor 
-            });
+            console.log('');*/
+			
+			var resultado = rows[0];
+			
+            res.json({ resultado });
         }
     });
 
