@@ -1,29 +1,21 @@
 <!doctype html>
-<html ng-app="craniowebapifront">
+<html ng-app="cradmin">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cranio</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+    <script src="/js/angular/angular.min.js"></script>
     <script src="core.js"></script>
 </head>
 <body ng-controller="mainController">
 	<div class="container">
 		<header>
-			<h1>CranioCalculatorApp Admin</h1>
+			<!-- <h1>CranioCalculatorApp Admin</h1> -->
+			<h1>admin</h1>
 		</header>
 		<section>
-			<!--
-				<div class="form-group">
-					<label for="sistemas">Sistema</label>
-					<select id="sistemas" name="sistemas" class="form-control" ng-model="artigo.sistema">
-						<option value="sistema">--Escolha o sistema--</option>
-						<option ng-repeat="r in registros" ng-value="{{r.Id}}">{{r.AreaNome}}</option>
-					</select>
-				</div>
-			-->
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -40,13 +32,34 @@
 				<tbody>
 					<tr ng-repeat="r in registros" ng-value="{{r.Id}}">
 						<td>{{r.Id}}</td>
-						<td>{{r.AreaNome}}</td>
-						<td>{{r.CutPointNome}}</td>
-						<td>{{r.Operador}}</td>
-						<td>{{r.CutPointValor}}</td>
-						<td>{{r.Feminino}}</td>
-						<td>{{r.Masculino}}</td>
-						<td>{{r.Ordenador}}</td>
+
+						<td>
+							<input type="text" ng-model="r.AreaNome" id="areaNome" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 300px;'>
+						</td>
+
+						<td>
+							<input type="text" ng-model="r.CutPointNome" id="cutPointNome" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 60px;'>
+						</td>
+
+						<td>
+							<input type="text" ng-model="r.Operador" id="operador" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 60px;'>
+						</td>
+
+						<td>
+							<input type="text" ng-model="r.CutPointValor" id="cutPointValor" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 70px;'>
+						</td>
+
+						<td>
+							<input type="text" ng-model="r.Feminino" id="feminino" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 80px;'>
+						</td>
+
+						<td>
+							<input type="text" ng-model="r.Masculino" id="masculino" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 80px;'>
+						</td>
+
+						<td>
+							<input type="text" ng-model="r.Ordenador" id="ordenador" ng-style="estiloPadrao" ng-readonly="!editavel" ng-click="editarParametro(r)" ng-focus="editarParametro(r)" ng-blur="parouEditarParametro(r)" style='width: 70px;'>
+						</td>
 					</tr>
 				</tbody>
 			</table>

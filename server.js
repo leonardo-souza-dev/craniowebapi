@@ -26,6 +26,80 @@ connection.connect(function(err){
 });
 
 //implementacao parcial
+app.post('/api/gravarouatualizarparametro', function procurarExistente(req, res) {
+
+    //console.log('********');
+    //console.log('req.body');
+    //console.log(req.body);
+    //console.log('');
+
+    //console.log('********');
+    //console.log('req.body.Id');
+    //console.log(req.body.Id);
+    //console.log('');
+
+    var lId = req.body.Id;
+    var lAreaNome = req.body.AreaNome;
+    var lCutPointNome = req.body.CutPointNome;
+    var lOperador = req.body.Operador;
+    var lCutPointValor = req.body.CutPointValor;
+    var lFeminino = req.body.Feminino;
+    var lMasculino = req.body.Masculino;
+    var lOrdenador = req.body.Ordenador;
+
+    var corpoResponse = {};
+
+    connection.query("SELECT * FROM Area_Cutpoint WHERE Id = " + lId + "; ", function gravarOuAtualizar(err1, rows1, fields) {
+                     
+        if (err1) {
+            console.log('Erro na query:' + err1);
+            connection.end();
+        } else {			
+			var resultado = rows1[0];
+            
+			console.log('*** resultado do select');
+            console.log(rows1);
+            console.log('');
+
+            if (rows1.length == 0) {
+				console.log('*** zero resultado');
+            } else {
+				console.log('*** ' + rows1.length +  ' resultados');
+
+				var queryUpdate = "UPDATE Area_Cutpoint " + 
+								 " SET AreaNome = '" + lAreaNome + 
+								 "', CutPointNome = '" + lCutPointNome + 
+								 "', Operador = '" + lOperador + 
+								 "', CutPointValor = '" + lCutPointValor + 
+								 "', Feminino = '" + lFeminino + 
+								 "', Masculino = '" + lMasculino + 
+								 "', Ordenador = '" + lOrdenador + 
+								 "' WHERE Id = " + lId + ";";
+
+				//update
+			    connection.query(queryUpdate, function atualizare(err2, rows2, fields2) {
+			                     
+			        if (err2) {
+			        	corpoResponse = { resultado: "ERR: Erro ao atualizar" };
+			        	console.log(corpoResponse);
+			            console.log('Erro na query:' + err2);
+			            connection.end();
+			        } else {
+			        	var msgAtualizacao =  "VEROBOSE: Atualizado Registro Id #" + lId;
+			        	console.log(msgAtualizacao);
+			            corpoResponse = { resultado: msgAtualizacao };
+			            return;
+			        }
+			    });
+
+            }
+			
+            res.json({ resultado: corpoResponse });
+            return;
+        }
+    });		
+});
+
 app.post('/api/obterGenero', function(req, res) {
 		
 	var valor = req.body.valor;
