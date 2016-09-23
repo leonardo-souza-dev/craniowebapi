@@ -29,7 +29,7 @@
 						<td>Ordenador</td>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="tabela-corpo">
 					<tr ng-repeat="r in registros" ng-value="{{r.Id}}">
 						<td>{{r.Id}}</td>
 
@@ -63,16 +63,8 @@
 					</tr>
 				</tbody>
 			</table>
-				
-			<!-- <h4>Medidas Cranianas Superiores</h4>
-			<p>AreaNome: {{ superiores.AreaNome }}</p>
-			<p>CutPointNome: {{ superiores.CutPointNome }}</p>
-			<p>Operador: {{ superiores.Operador }}</p>
-			<p>CutPointValor: {{ superiores.CutPointValor }}</p>
-			<p>Feminino: {{ superiores.Feminino }}</p>
-			<p>Masculino: {{ superiores.Masculino }}</p>
-			<p>Ordenador: {{ superiores.Ordenador }}</p> -->
-			</section>
+			<button type="button" class="btn btn-primary" ng-click="adicionarRegistro()">Adicionar</button>
+		</section>
 		<footer></footer>
 	</div>
 </body>

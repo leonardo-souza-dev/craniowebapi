@@ -21,13 +21,20 @@ var cradmin = angular.module("cradmin", []).controller('mainController', functio
             console.log('Error: ');
             console.log(data);
         });
-		
+        
+    $scope.adicionarRegistro = function () {
+        var registroVazio = { Id: null, AreaNome: '', CutPointNome: '', Operador: '', CutPointValor: '', lCutPointValor: '', Feminino: '', Masculino: '', Ordenador: '' };
+        console.log(registroVazio);
+        $scope.registros.push(registroVazio);
+    };
+        
     $scope.gravarOuAtualizarParametro = function (pParametro) {
             console.log('*********ENTROU NO GRAVAR OU ATUALIZAR: ');
             //console.log(data);
         $http.post("/api/gravarouatualizarparametro", pParametro)
             .success(function (data) {
-                $scope.artigo = {};
+                console.log('sucesso');
+                console.log(data);
             }).error(function(data) {
                 console.log(data);
             });

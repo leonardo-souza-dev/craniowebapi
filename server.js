@@ -25,6 +25,93 @@ connection.connect(function(err){
     console.log('Connection established');
 });
 
+function inserir(errInsert, rowsInsert) {
+	if (errInsert) {
+		corpoResponse = { resultado: "ERR: Erro ao inserir" };
+		console.log(corpoResponse);
+	    console.log('Erro na query:' + errInsert);
+	    connection.end();
+	} else {
+
+		//console.log('************************ rows3');
+		//console.log(rows3);
+		//console.log('************************ rows3[0]');
+		//console.log(rows3[0]);
+
+		var msgAtualizacao =  "VERBOSE: Inseriro Registro Id #" + rowsInsert.insertId;
+		console.log(msgAtualizacao);
+		
+		console.log('--------------------------------response final de INSERCAO');
+		var obj = { resultado: { msg: msgAtualizacao, novoId: rowsInsert.insertId } };
+        return obj;
+	}
+}
+
+function atualizar(errAtualizar, rowsAtualizar, fields2) {
+    if (errAtualizar) {
+    	corpoResponse = { resultado: "ERR: Erro ao atualizar" };
+    	console.log(corpoResponse);
+        console.log('Erro na query:' + errAtualizar);
+        connection.end();
+    } else {
+    	var msgAtualizacao =  "VERBOSE: Atualizado Registro Id #" + lId;
+    	console.log(msgAtualizacao);
+		
+		console.log('--------------------------------response final de ATUALIZACAO');
+		res.json({ resultado: { resultado: msgAtualizacao } });
+    }
+}
+
+function gravarOuAtualizar(err1, rows1, fields, objetoInsercao) {
+    if (err1) {
+        console.log('Erro na query:' + err1);
+        connection.end();
+    } else {			
+		var resultado = rows1[0];
+        
+		console.log('*** resultado do select');
+        console.log(rows1);
+        console.log('');
+
+        if (rows1.length == 0) {
+			console.log('*** zero resultado');
+
+			var queryInsert = "INSERT INTO Area_Cutpoint " + 
+							 " (AreaNome, CutPointNome, Operador, CutPointValor, Feminino, Masculino , Ordenador) " + 
+					  " VALUES ('"+
+					  	objetoInsercao.AreaNome + "','" +
+					  	objetoInsercao.CutPointNome + "', '" +
+					  	objetoInsercao.Operador + "', '" +
+					  	objetoInsercao.CutPointValor + "', '" +
+					  	objetoInsercao.Feminino + "', '" +
+					  	objetoInsercao.Masculino + "', '" +
+					  	objetoInsercao.Ordenador + "');";
+
+			console.log(queryInsert);
+
+			//INSERIR
+		    connection.query(queryInsert, inserir);
+
+        } else {
+			console.log('*** ' + rows1.length +  ' resultados');
+
+			var queryUpdate = "UPDATE Area_Cutpoint " + 
+							 " SET AreaNome = '" + lAreaNome + 
+							 "', CutPointNome = '" + lCutPointNome + 
+							 "', Operador = '" + lOperador + 
+							 "', CutPointValor = '" + lCutPointValor + 
+							 "', Feminino = '" + lFeminino + 
+							 "', Masculino = '" + lMasculino + 
+							 "', Ordenador = '" + lOrdenador + 
+							 "' WHERE Id = " + lId + ";";
+
+			//ATUALIZAR
+		    connection.query(queryUpdate, atualizar);
+
+        }
+    }
+}
+
 //implementacao parcial
 app.post('/api/gravarouatualizarparametro', function procurarExistente(req, res) {
 
@@ -47,56 +134,23 @@ app.post('/api/gravarouatualizarparametro', function procurarExistente(req, res)
     var lMasculino = req.body.Masculino;
     var lOrdenador = req.body.Ordenador;
 
-    var corpoResponse = {};
+    var objeto = { 
+    	AreaNome: lAreaNome, 
+    	CutPointNome: lCutPointNome, 
+    	Operador: lOperador, 
+    	CutPointValor: lCutPointValor,
+    	Feminino: lFeminino,
+    	Masculino: lMasculino,
+    	Ordenador: lOrdenador
+    }
 
-    connection.query("SELECT * FROM Area_Cutpoint WHERE Id = " + lId + "; ", function gravarOuAtualizar(err1, rows1, fields) {
-                     
-        if (err1) {
-            console.log('Erro na query:' + err1);
-            connection.end();
-        } else {			
-			var resultado = rows1[0];
-            
-			console.log('*** resultado do select');
-            console.log(rows1);
-            console.log('');
-
-            if (rows1.length == 0) {
-				console.log('*** zero resultado');
-            } else {
-				console.log('*** ' + rows1.length +  ' resultados');
-
-				var queryUpdate = "UPDATE Area_Cutpoint " + 
-								 " SET AreaNome = '" + lAreaNome + 
-								 "', CutPointNome = '" + lCutPointNome + 
-								 "', Operador = '" + lOperador + 
-								 "', CutPointValor = '" + lCutPointValor + 
-								 "', Feminino = '" + lFeminino + 
-								 "', Masculino = '" + lMasculino + 
-								 "', Ordenador = '" + lOrdenador + 
-								 "' WHERE Id = " + lId + ";";
-
-				//update
-			    connection.query(queryUpdate, function atualizare(err2, rows2, fields2) {
-			                     
-			        if (err2) {
-			        	corpoResponse = { resultado: "ERR: Erro ao atualizar" };
-			        	console.log(corpoResponse);
-			            console.log('Erro na query:' + err2);
-			            connection.end();
-			        } else {
-			        	var msgAtualizacao =  "VEROBOSE: Atualizado Registro Id #" + lId;
-			        	console.log(msgAtualizacao);
-			            corpoResponse = { resultado: msgAtualizacao };
-			            return;
-			        }
-			    });
-
-            }
-			
-            res.json({ resultado: corpoResponse });
-            return;
-        }
+    connection.query(" SELECT * FROM Area_Cutpoint WHERE Id = " + lId + "; ", function (err, rows, fields) {
+    	var ojbeto = gravarOuAtualizar(err, rows, fields, objeto, res);
+    	
+    	console.log('ojbeto');
+    	console.log(ojbeto);
+    	
+    	return res.json( ojbeto );
     });		
 });
 
